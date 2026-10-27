@@ -1,0 +1,109 @@
+import React from "react";
+
+class RegistrationForm extends React.Component {
+  state = {
+    name: "",
+    email: "",
+    password: "",
+    errors: {},
+  };
+
+  validate() {
+    const errors = {};
+
+    if (!this.state.name) {
+      errors.name = "Name is required";
+    } else if (this.state.name.length < 3) {
+      errors.name = "Name must be at least 3 letters";
+    }
+
+    if (!this.state.email) {
+      errors.email = "Email is required";
+    } else if (
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.state.email)
+    ) {
+      errors.email = "Email is invalid";
+    }
+
+    if (!this.state.password) {
+      errors.password = "Password is required";
+    } else if (this.state.password.length < 8) {
+      errors.password = "Password must be at least 8 letters";
+    }
+
+    this.setState({ errors });
+
+    return Object.keys(errors).length === 0;
+  }
+
+  handleChange = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (this.validate()) {
+      alert("Form submitted!");
+
+      // Reset the form after successful submission
+      this.setState({
+        name: "",
+        email: "",
+        password: "",
+        errors: {},
+      });
+    }
+  };
+
+  render() {
+    const { name, email, password, errors } = this.state;
+
+    return (
+      <div>
+        <h1>Registration Form for OSEER Imput</h1>
+
+        <form onSubmit={this.handleSubmit} noValidate>
+          <div>
+            <input
+              type="text"
+              name="name"
+              placeholder="Name"
+              value={name}
+              onChange={this.handleChange}
+            />
+            <div>{errors.name}</div>
+          </div>
+
+          <div>
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              value={email}
+              onChange={this.handleChange}
+            />
+            <div>{errors.email}</div>
+          </div>
+
+          <div>
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              value={password}
+              onChange={this.handleChange}
+            />
+            <div>{errors.password}</div>
+          </div>
+
+          <button type="submit">Register</button>
+        </form>
+      </div>
+    );
+  }
+}
+
+export default RegistrationForm;
